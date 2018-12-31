@@ -17,9 +17,8 @@ char def_farbe[7] ="ffffff" ;
 int anz_threads = 1;
 #define DATA_MAX 1000000
 #define TEMP_MAX 100
-char data[1000000]="\n";
-char tmp[100]="\n";
 int breite=5;
+int laenge = 1000;
 
 void *Thread(){
 	int sock = socket(AF_INET, SOCK_STREAM,0);
@@ -27,7 +26,6 @@ void *Thread(){
 	server_data.sin_family = AF_INET;//Addressfamilie
 	server_data.sin_port = htons(port);//Portnummer
 	server_data.sin_addr.s_addr = inet_addr(ip);//IP-Adresse
-	long int laenge = 1000000000000;
 	int max = 16777215;
 	int anf_x;
 	int anf_y;
@@ -43,7 +41,7 @@ void *Thread(){
 	int farbe1=0;
 	int farbe2=0;
 	srand(time(NULL));
-	int zufall_farbe=rand()%2;
+
 	if(sock < 0){
 		printf("Fehler beim Erzeugen des Sockets\n");
 		exit(-1);
@@ -60,7 +58,7 @@ void *Thread(){
 			rechts=0;
 			oben=0;
 			unten=0;
-			for(long int i=0;i<=1000;i++){
+			for(long int i=0;i<=laenge;i++){
 				if(i%2==0){
 					ri_wechsel = rand()%10;
 					if(ri_wechsel<=1){
