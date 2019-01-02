@@ -74,7 +74,7 @@ void *Thread(){
 				for(int j=1;j<breite; j++){
 					if(richtung==0){
 						unten = unten +1;
-						diff_uo=oben-unten;
+						diff_uo=unten-oben;
 						diff_rl=rechts-links;
 						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl-j,anf_y+diff_uo,farbe1);
 						strcat(data,tmp);
