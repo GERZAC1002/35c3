@@ -68,7 +68,7 @@ void *Thread(){
 				farbe1 = rand()%max;
 				farbe2 = rand()%max;
 				int diff_uo=unten-oben;
-		  		int diff_rl=rechts-links;
+				int diff_rl=rechts-links;
 				//sprintf(data, "HELP\n");
 				//send(sock, data, strlen(data), 0);
 				for(int j=1;j<breite; j++){
@@ -89,41 +89,41 @@ void *Thread(){
 						oben = oben +1;
 						diff_uo=unten-oben;
 						diff_rl=rechts-links;
-					        sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl+j,anf_y+diff_uo,farbe2);
+						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl+j,anf_y+diff_uo,farbe2);
 						strcat(data,tmp);
-					        sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl-j,anf_y+diff_uo,farbe1);
+						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl-j,anf_y+diff_uo,farbe1);
 						strcat(data,tmp);
-					        sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl+breite,anf_y+diff_uo,def_farbe);
+						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl+breite,anf_y+diff_uo,def_farbe);
 						strcat(data,tmp);
-					        sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl-breite,anf_y+diff_uo,def_farbe);
+						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl-breite,anf_y+diff_uo,def_farbe);
 						strcat(data,tmp);
-				        }
-				      	if(richtung==2){
+					}
+					if(richtung==2){
 						links = links +1;
 						diff_uo=unten-oben;
 						diff_rl=rechts-links;
-	        				sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo+j,farbe1);
+						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo+j,farbe1);
 						strcat(data,tmp);
 						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo-j,farbe2);
 						strcat(data,tmp);
-		      				sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo+breite,def_farbe);
+						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo+breite,def_farbe);
 						strcat(data,tmp);
-	        				sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo-breite,def_farbe);
+						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo-breite,def_farbe);
 						strcat(data,tmp);
-	      				}
-				        if(richtung==3){
+					}
+					if(richtung==3){
 						rechts = rechts +1;
 						diff_uo= unten-oben;
 						diff_rl=rechts-links;
-					        sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo-j,farbe2);
+						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo-j,farbe2);
 						strcat(data,tmp);
-				        	sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo+j,farbe1);
+						sprintf(tmp,"PX %i %i %x\n",anf_x+diff_rl,anf_y+diff_uo+j,farbe1);
 						strcat(data,tmp);
-	        				sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo-breite,def_farbe);
+						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo-breite,def_farbe);
 						strcat(data,tmp);
-	        				sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo+breite,def_farbe);
+						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo+breite,def_farbe);
 						strcat(data,tmp);
-	        			}
+					}
 				}
 				diff_uo=unten-oben;
 	    			diff_rl=rechts-links;
