@@ -18,22 +18,19 @@ You should have received a copy of the GNU General Public License along with thi
 #include <string.h>
 #include <unistd.h>
 
-unsigned short int port = 80;
-int farbe = 100000;
-int offset_x =300;
-int offset_y = 300;
-int bild_hohe = 100;
-int bild_breite = 100;
-int hohe = 1080;
-int breite = 1920;
+#define HOHE 1080
+#define BREITE 1980
+#define PORT 1234
+
+char data[HOHE*BREITE*15];
 
 int main(int argc, char *argv[]){
 	int sock = socket(AF_INET, SOCK_STREAM,0);
-	port = atoi(argv[2]);
+	//port = atoi(argv[2]);
 	srand(time(NULL));
 	struct sockaddr_in server_data;
 	server_data.sin_family = AF_INET;//Addressfamilie
-	server_data.sin_port = htons(port);//Portnummer
+	server_data.sin_port = htons(PORT);//Portnummer
 	server_data.sin_addr.s_addr = inet_addr(argv[1]);//IP-Adresse
 
 	if(sock < 0){
@@ -41,17 +38,15 @@ int main(int argc, char *argv[]){
 	}else{
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
       	 		printf("Fehler beim herstellen der Verbindung\n");
-		}else{			
-			while(1){
-			        offset_x=rand()%(breite-bild_breite);
-			        offset_y=rand()%(hohe-bild_hohe);
-				for(int x=0; x <= bild_hohe;x++){
-					for(int y=0; y <= bild_breite; y++){
-						char data[100]="\n";
-						sprintf(data, "PX %i %i %X\n",x+offset_x,y+offset_y,farbe);
-						send(sock, data, strlen(data), 0);
-					}
+		}else{
+			for(int x = 0;x < BREITE;x++){
+				for(int y = 0;y < HOHE;y++){
+					sprintf(data,"PX %i %i\n",x,y);
 				}
+			}
+			while(1){
+				send(sock, data, strlen(data), 0);
+				sleep(60);
 			}
 		}
 	}
