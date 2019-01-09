@@ -19,23 +19,26 @@ You should have received a copy of the GNU General Public License along with thi
 #include <string.h>
 #include <pthread.h>
 
+#define DATA_MAX 1000000
+#define TEMP_MAX 100
+
 int port=1234;
 char ip[100]="151.217.40.82";
 int max_x = 1920;
 int max_y = 1080;
 char def_farbe[7] ="ffffff" ;
 int anz_threads = 1;
-#define DATA_MAX 1000000
-#define TEMP_MAX 100
 int breite=5;
 int laenge = 1000;
 
 void *Thread(){
+
 	int sock = socket(AF_INET, SOCK_STREAM,0);
 	struct sockaddr_in server_data;
 	server_data.sin_family = AF_INET;//Addressfamilie
 	server_data.sin_port = htons(port);//Portnummer
 	server_data.sin_addr.s_addr = inet_addr(ip);//IP-Adresse
+
 	int max = 16777215;
 	int anf_x;
 	int anf_y;
@@ -47,11 +50,10 @@ void *Thread(){
 	int links;
 	char data[DATA_MAX]="\n";
 	char tmp[TEMP_MAX]="\n";
-
 	int farbe1=0;
 	int farbe2=0;
-	srand(time(NULL));
 
+	srand(time(NULL));
 	if(sock < 0){
 		printf("Fehler beim Erzeugen des Sockets\n");
 		exit(-1);
@@ -151,14 +153,22 @@ void *Thread(){
 }
 
 int main(int argc, char *argv[]){
-	int i;
-	port=atoi(argv[2]);
-	anz_threads=atoi(argv[3]);
-	for(int i=0;i<16;i++){
-		ip[i] = argv[1][i];
+	if(argc < 4){
+		printf("Eingabe IPv4:");
+		scanf("%s",ip);
+		printf("Eingabe Port:");
+		scanf("%d",&port);
+		printf("Anzahl Threads:");
+		scanf("%s",&anz_threads);
+	}else{
+		port=atoi(argv[2]);
+		anz_threads=atoi(argv[3]);
+		for(int i=0;i<16;i++){
+			ip[i] = argv[1][i];
+		}
 	}
 	pthread_t tid;
-	for (i = 0; i < anz_threads; i++){
+	for (int i = 0; i < anz_threads; i++){
         	pthread_create(&tid, NULL, Thread, (void *)&tid);
 	}
 	pthread_exit(NULL);
