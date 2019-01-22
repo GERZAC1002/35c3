@@ -5,7 +5,7 @@ This program is free software; you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -60,8 +60,10 @@ void *Thread(){
 	}else{
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
       	 		printf("Fehler beim herstellen der Verbindung\n");
+						close(sock);
+						exit(1);
 		}else{
-			printf("Verbindung hergestellt\n");	
+			printf("Verbindung hergestellt\n");
 		}
 		while(1){
 			anf_x=rand()%max_x;
@@ -97,7 +99,7 @@ void *Thread(){
 						sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl+breite,anf_y+diff_uo,def_farbe);
 						strcat(data,tmp);
 					}
-	        			if(richtung==1){
+					if(richtung==1){
 						oben = oben +1;
 						diff_uo=unten-oben;
 						diff_rl=rechts-links;
@@ -149,6 +151,7 @@ void *Thread(){
 			}
 		}
 	}
+	close(sock);
 	exit(0);
 }
 
