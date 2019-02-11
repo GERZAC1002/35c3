@@ -5,7 +5,7 @@ This program is free software; you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -47,7 +47,7 @@ void *Thread(){
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
       	 		printf("Fehler beim herstellen der Verbindung\n");
 		}else{
-			printf("Verbindung hergestellt\n");	
+			printf("Verbindung hergestellt\n");
 		}
 		while(1){
 		        int matrix[1000][1000] ={
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]){
 	}
 	pthread_t tid;
 	for (i = 0; i < anz_threads; i++){
-        	pthread_create(&tid, NULL, Thread, (void *)&tid);
+  	pthread_create(&tid, NULL, Thread, (void *)&tid);
 	}
 	pthread_exit(NULL);
 	return 0;
