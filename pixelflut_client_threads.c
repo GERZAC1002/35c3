@@ -162,7 +162,7 @@ int main(int argc, char *argv[]){
 		printf("Eingabe Port:");
 		scanf("%d",&port);
 		printf("Anzahl Threads:");
-		scanf("%s",&anz_threads);
+		scanf("%d",&anz_threads);
 	}else{
 		port=atoi(argv[2]);
 		anz_threads=atoi(argv[3]);
