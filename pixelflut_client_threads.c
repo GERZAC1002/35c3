@@ -157,6 +157,7 @@ void *Thread(){
 
 int main(int argc, char *argv[]){
 	if(argc < 4){
+		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port> <Threads>\n");
 		printf("Eingabe IPv4:");
 		scanf("%s",ip);
 		printf("Eingabe Port:");

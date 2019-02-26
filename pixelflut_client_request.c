@@ -5,7 +5,7 @@ This program is free software; you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -20,18 +20,30 @@ You should have received a copy of the GNU General Public License along with thi
 
 #define HOHE 1080
 #define BREITE 1980
-#define PORT 1234
 
 char data[HOHE*BREITE*15];
+char ip[100]="151.217.40.82";
+int port = 1234;
 
 int main(int argc, char *argv[]){
+	if(argc < 3){
+		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port>\n");
+		printf("Eingabe IPv4:");
+		scanf("%s",ip);
+		printf("Eingabe Port:");
+		scanf("%d",&port);
+	}else{
+		port=atoi(argv[2]);
+		for(int i=0;i<16;i++){
+			ip[i] = argv[1][i];
+		}
+	};
 	int sock = socket(AF_INET, SOCK_STREAM,0);
-	//port = atoi(argv[2]);
 	srand(time(NULL));
 	struct sockaddr_in server_data;
 	server_data.sin_family = AF_INET;//Addressfamilie
-	server_data.sin_port = htons(PORT);//Portnummer
-	server_data.sin_addr.s_addr = inet_addr(argv[1]);//IP-Adresse
+	server_data.sin_port = htons(port);//Portnummer
+	server_data.sin_addr.s_addr = inet_addr(ip);//IP-Adresse
 
 	if(sock < 0){
 		printf("Fehler beim Erzeugen des Sockets\n");

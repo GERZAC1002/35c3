@@ -20,17 +20,17 @@ You should have received a copy of the GNU General Public License along with thi
 #include <pthread.h>
 
 int port=1234;
-char ip[100]="151.217.40.82";
-#define  max_x 1920
-#define  max_y 1080
-#define  bild_hohe  250
-#define  bild_breite  750
-int offset_x = max_x-bild_breite;
-int offset_y = max_y-bild_hohe;
+char ip[100] = "151.217.40.82";
+int  max_x = 1920;
+int  max_y = 1080;
+#define  bild_hohe  50
+#define  bild_breite  550
 char def_farbe[7] ="ff00" ;
 int anz_threads = 1;
 #define DATA_MAX 1000000
 #define TEMP_MAX 100
+int offset_x;
+int offset_y;
 
 void *Thread(){
 	int sock = socket(AF_INET, SOCK_STREAM,0);
@@ -45,28 +45,28 @@ void *Thread(){
 		exit(-1);
 	}else{
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
-      	 		printf("Fehler beim herstellen der Verbindung\n");
+			printf("Fehler beim herstellen der Verbindung\n");
 		}else{
 			printf("Verbindung hergestellt\n");
 		}
 		while(1){
-		        int matrix[1000][1000] ={
-        	        	{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		                {0, 0, 1, 0,1, 0, 0, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        		        {1, 1, 1, 0,1, 1, 1, 0,1, 0, 0, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        	        	{0, 0, 1, 0,0, 0, 1, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		                {1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		        };
-	        	for(int x=0;x<=bild_breite;x++){
-        	        	for(int y=0;y<=bild_hohe;y++){
-                	        	if(matrix[y/50][x/50]==1){
+			int matrix[1000][1000] ={
+				{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 1, 0,1, 0, 0, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{1, 1, 1, 0,1, 1, 1, 0,1, 0, 0, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{0, 0, 1, 0,0, 0, 1, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			};
+			for(int x=0;x<=bild_breite;x++){
+				for(int y=0;y<=bild_hohe;y++){
+					if(matrix[y/35][x/35]==1){
 						sprintf(tmp,"PX %i %i %s\n",x+offset_x,y+offset_y,def_farbe);
 						strcat(data,tmp);
-        	                        }else{
+					}else{
 						sprintf(tmp,"PX %i %i 0\n",x+offset_x,y+offset_y);
 						strcat(data,tmp);
 					}
-	                        }
+				}
 				send(sock, data, strlen(data), 0);
 				data[0]='\0';
 				sprintf(data,"\n");
@@ -77,14 +77,31 @@ void *Thread(){
 }
 
 int main(int argc, char *argv[]){
-	int i;
-	port=atoi(argv[2]);
-	anz_threads=atoi(argv[3]);
-	for(int i=0;i<16;i++){
-		ip[i] = argv[1][i];
+	if(argc < 4){
+		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port> <Threads>\n");
+		printf("Eingabe IPv4:");
+		scanf("%s",ip);
+		printf("Eingabe Port:");
+		scanf("%d",&port);
+		printf("Anzahl Threads:");
+		scanf("%d",&anz_threads);
+		printf("Eingabe Position x:");
+		scanf("%d",&max_x);
+		max_x = max_x + bild_breite;
+		printf("Eingabe Position y:");
+		scanf("%d",&max_y);
+		max_y = max_y + bild_hohe;
+	}else{
+		port=atoi(argv[2]);
+		anz_threads=atoi(argv[3]);
+		for(int i=0;i<16;i++){
+			ip[i] = argv[1][i];
+		}
 	}
+	offset_x = max_x - bild_breite;
+	offset_y = max_y - bild_hohe;
 	pthread_t tid;
-	for (i = 0; i < anz_threads; i++){
+	for (int i = 0; i < anz_threads; i++){
   	pthread_create(&tid, NULL, Thread, (void *)&tid);
 	}
 	pthread_exit(NULL);

@@ -5,7 +5,7 @@ This program is free software; you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <stdio.h>
@@ -43,7 +43,7 @@ void *Thread(){
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
       	 		printf("Fehler beim herstellen der Verbindung\n");
 		}else{
-			printf("Verbindung hergestellt\n");	
+			printf("Verbindung hergestellt\n");
 		}
 		while(1){
 			for(int x=0;x<=max_x;x++){
@@ -62,14 +62,23 @@ void *Thread(){
 }
 
 int main(int argc, char *argv[]){
-	int i;
-	port=atoi(argv[2]);
-	anz_threads=atoi(argv[3]);
-	for(int i=0;i<16;i++){
-		ip[i] = argv[1][i];
-	}
+	if(argc < 4){
+		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port> <Threads>\n");
+		printf("Eingabe IPv4:");
+		scanf("%s",ip);
+		printf("Eingabe Port:");
+		scanf("%d",&port);
+		printf("Anzahl Threads:");
+		scanf("%d",&anz_threads);
+	}else{
+		port=atoi(argv[2]);
+		anz_threads=atoi(argv[3]);
+		for(int i=0;i<16;i++){
+			ip[i] = argv[1][i];
+		}
+	};
 	pthread_t tid;
-	for (i = 0; i < anz_threads; i++){
+	for (int i = 0; i < anz_threads; i++){
         	pthread_create(&tid, NULL, Thread, (void *)&tid);
 	}
 	pthread_exit(NULL);
