@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -lpthread
+CFLAGS = -Wall -lpthread -ffast-math -Os -s
 
 pixelflutclient:
 	$(CC) $(CFLAGS) -o pixelflut_client pixelflut_client.c
