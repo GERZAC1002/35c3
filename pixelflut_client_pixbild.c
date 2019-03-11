@@ -24,7 +24,7 @@ char ip[100] = "151.217.40.82";
 int  max_x = 1920;
 int  max_y = 1080;
 #define  bild_hohe  50
-#define  bild_breite  550
+#define  bild_breite  150
 char def_farbe[7] ="ff00" ;
 int anz_threads = 1;
 #define DATA_MAX 1000000
@@ -59,7 +59,7 @@ void *Thread(){
 			};
 			for(int x=0;x<=bild_breite;x++){
 				for(int y=0;y<=bild_hohe;y++){
-					if(matrix[y/35][x/35]==1){
+					if(matrix[y/10][x/10]==1){
 						sprintf(tmp,"PX %i %i %s\n",x+offset_x,y+offset_y,def_farbe);
 						strcat(data,tmp);
 					}else{
