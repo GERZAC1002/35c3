@@ -140,7 +140,7 @@ void *Thread(){
 					}
 				}
 				diff_uo=unten-oben;
-	    			diff_rl=rechts-links;
+				diff_rl=rechts-links;
 				sprintf(tmp,"PX %i %i %s\n",anf_x+diff_rl,anf_y+diff_uo,def_farbe);
 				strcat(data,tmp);
 				if(i%100){

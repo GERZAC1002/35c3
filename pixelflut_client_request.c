@@ -11,6 +11,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <limits.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -18,14 +19,16 @@ You should have received a copy of the GNU General Public License along with thi
 #include <string.h>
 #include <unistd.h>
 
-#define HOHE 1080
-#define BREITE 1980
+#define HOHE 800
+#define BREITE 1280
 
-char data[HOHE*BREITE*15];
-char ip[100]="151.217.40.82";
+char data[HOHE+BREITE+20];
+char ip[100]="127.0.0.1";
 int port = 1234;
 
 int main(int argc, char *argv[]){
+	char *data_r;
+	data_r = malloc(21*sizeof(char *));
 	if(argc < 3){
 		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port>\n");
 		printf("Eingabe IPv4:");
@@ -49,17 +52,31 @@ int main(int argc, char *argv[]){
 		printf("Fehler beim Erzeugen des Sockets\n");
 	}else{
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
-      	 		printf("Fehler beim herstellen der Verbindung\n");
+			printf("Fehler beim herstellen der Verbindung\n");
 		}else{
-			for(int x = 0;x < BREITE;x++){
-				for(int y = 0;y < HOHE;y++){
-					sprintf(data,"PX %i %i\n",x,y);
+			for(int x = 0;x <= BREITE-1;x++){
+				for(int y = 0;y <= HOHE-1;y++){
+					char tmp[14];
+					sprintf(tmp,"PX %i %i\n",x,y);
+					strcat(data,tmp);
+					if(send(sock, data, strlen(data), 0)){
+						if(recv(sock, data_r, sizeof(data_r),0) > 0){
+							printf("%s",data_r);
+							data_r[0]=NULL;
+						}
+					}
+					data[0] = '\0';
+					sprintf(data, "\n");
 				}
 			}
-			while(1){
-				send(sock, data, strlen(data), 0);
-				sleep(60);
+			while(recv(sock, data_r, sizeof(data_r),0) > 0){
+				printf("%s",data_r);
+				data_r[0]=NULL;
 			}
+			free(data_r);
+			printf("\nProgrammende!\n");
+			close(sock);
+			return 0;
 		}
 	}
 }

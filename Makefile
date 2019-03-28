@@ -15,4 +15,4 @@ pixelflutclient:
 
 
 clean:
-	rm -f pixelflut_client pixelflut_client_loesch pixelflut_client_pixbild pixelflut_client_threads pixelflut_client_request
+	rm -f pixelflut_client pixelflut_client_loesch pixelflut_client_pixbild pixelflut_client_threads pixelflut_client_request pixelflut_client.s pixelflut_client_loesch.s pixelflut_client_pixbild.s pixelflut_client_threads.s pixelflut_client_request.s
