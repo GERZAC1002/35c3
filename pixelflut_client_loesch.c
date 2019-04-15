@@ -42,6 +42,7 @@ void *Thread(){
 	}else{
 		if (connect(sock,(struct sockaddr*)&server_data, sizeof(server_data)) < 0){
       	 		printf("Fehler beim herstellen der Verbindung\n");
+			exit(1);
 		}else{
 			printf("Verbindung hergestellt\n");
 		}
