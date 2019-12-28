@@ -27,14 +27,15 @@ int  max_x = 1920;
 int  max_y = 1080;
 int  bild_hohe =  100;
 int  bild_breite = 300;
-char def_farbe[7] ="ff00" ;
+char def_farbe[10] ="ff00" ;
 int anz_threads = 1;
 #define DATA_MAX 1000000
 #define TEMP_MAX 100
 int offset_x;
 int offset_y;
+long int zeit1 = 0;
 
-void *Thread(){
+void *Thread(void *tid){
 	bild_hohe = bild_hohe * g;
 	bild_breite = bild_breite * g;
 	int sock = socket(AF_INET, SOCK_STREAM,0);
@@ -53,14 +54,25 @@ void *Thread(){
 		}else{
 			printf("Verbindung hergestellt\n");
 		}
+		int matrix[1000][1000] ={
+			{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 1, 0,1, 0, 0, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{1, 1, 1, 0,1, 1, 1, 0,1, 0, 0, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 1, 0,1, 0, 1, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		};
+		if(tid == 0){
+			srand(time(NULL));
+		}
 		while(1){
-			int matrix[1000][1000] ={
-				{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 1, 0,1, 0, 0, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{1, 1, 1, 0,1, 1, 1, 0,1, 0, 0, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 1, 0,1, 0, 1, 0,1, 0, 1, 0,0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0,1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			};
+			if(tid == 0 && ((zeit1+10) < time(NULL))){
+				zeit1 = time(NULL);
+				unsigned char rot = rand()%255;
+				unsigned char grun = rand()%255;
+				unsigned char blau = rand()%255;
+                                sprintf(def_farbe,"%X%X%X\0",rot,grun,blau);
+                                printf("Rot:%d, Grun:%d, Blau:%d, hex:%s\n",rot,grun,blau,def_farbe);
+                        }
 			for(int x=0;x<=bild_breite;x++){
 				for(int y=0;y<=bild_hohe;y++){
 					if(matrix[y/(20*g)][x/(20*g)]==1){
@@ -110,9 +122,9 @@ int main(int argc, char *argv[]){
 	printf("ip:%s port:%d threads:%d x:%d y:%d\n",ip,port,anz_threads,max_x,max_y);
 	offset_x = max_x - bild_breite;
 	offset_y = max_y - bild_hohe;
-	pthread_t tid;
+	pthread_t threads[anz_threads];
 	for (int i = 0; i < anz_threads; i++){
-  	pthread_create(&tid, NULL, Thread, (void *)&tid);
+  	pthread_create(&threads[i], NULL, Thread, (void *)i);
 	}
 	pthread_exit(NULL);
 	return 0;

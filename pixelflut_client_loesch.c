@@ -24,7 +24,7 @@ int port=1234;
 char ip[100]="151.217.40.82";
 int max_x = 1920;
 int max_y = 1080;
-char def_farbe[7] ="0" ;
+char def_farbe[8] ="0" ;
 int anz_threads = 1;
 #define DATA_MAX 1000000
 #define TEMP_MAX 100
