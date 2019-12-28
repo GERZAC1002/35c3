@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <netinet/in.h>
 #include <string.h>
 #include <pthread.h>
+#include <signal.h>
 
 int port=1234;
 char ip[100]="151.217.40.82";
@@ -63,6 +64,7 @@ void *Thread(){
 }
 
 int main(int argc, char *argv[]){
+	signal(SIGPIPE, SIG_IGN);
 	if(argc < 4){
 		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port> <Threads>\n");
 		printf("Eingabe IPv4:");
