@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License along with thi
 #include <signal.h>
 
 int port=1234;
-char ip[100]="127.0.0.1";
+char ip[100]="2001:67c:20a1:1111:2051:5dff:feda:2983";
 int max_x = 1920;
 int max_y = 1080;
 char def_farbe[8] ="0" ;
@@ -30,12 +30,12 @@ int anz_threads = 1;
 #define TEMP_MAX 100
 
 void *Thread(){
-	int sock = socket(AF_INET, SOCK_STREAM,IPPROTO_TCP);
-	struct sockaddr_in server_data;
-	server_data.sin_family = AF_INET;//Addressfamilie
-	server_data.sin_port = htons(port);//Portnummer
-	server_data.sin_addr.s_addr = inet_addr(ip);//IP-Adresse
-	//inet_pton(AF_INET6,ip, &server_data.sin6_addr);
+	int sock = socket(AF_INET6, SOCK_STREAM,IPPROTO_TCP);
+	struct sockaddr_in6 server_data;
+	server_data.sin6_family = AF_INET6;//Addressfamilie
+	server_data.sin6_port = htons(port);//Portnummer
+	//server_data.sin6_addr.s_addr = inet_addr(ip);//IP-Adresse
+	inet_pton(AF_INET6,ip, &server_data.sin6_addr);
 	char data[DATA_MAX]="\n";
 	char tmp[TEMP_MAX]="\n";
 	if(sock < 0){

@@ -38,11 +38,12 @@ long int zeit1 = 0;
 void *Thread(void *tid){
 	bild_hohe = bild_hohe * g;
 	bild_breite = bild_breite * g;
-	int sock = socket(AF_INET, SOCK_STREAM,0);
-	struct sockaddr_in server_data;
-	server_data.sin_family = AF_INET;//Addressfamilie
-	server_data.sin_port = htons(port);//Portnummer
-	server_data.sin_addr.s_addr = inet_addr(ip);//IP-Adresse
+	int sock = socket(AF_INET6, SOCK_STREAM,IPPROTO_TCP);
+        struct sockaddr_in6 server_data;
+        server_data.sin6_family = AF_INET6;//Addressfamilie
+        server_data.sin6_port = htons(port);//Portnummer
+        //server_data.sin6_addr.s_addr = inet_addr(ip);//IP-Adresse
+        inet_pton(AF_INET6,ip, &server_data.sin6_addr);
 	char data[DATA_MAX]="\n";
 	char tmp[TEMP_MAX]="\n";
 	if(sock < 0){
@@ -91,7 +92,7 @@ void *Thread(void *tid){
 }
 
 int main(int argc, char *argv[]){
-	//signal(SIGPIPE, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
 	if(argc < 6){
 		printf("Kommandozeilen Parameter: <programm> <IP-Adresse> <Port> <Threads>\n");
 		printf("Eingabe IPv4:");
@@ -109,9 +110,11 @@ int main(int argc, char *argv[]){
 	}else{
 		port=atoi(argv[2]);
 		anz_threads=atoi(argv[3]);
-		for(int i=0;i<16;i++){
-			ip[i] = argv[1][i];
-		}
+		int i = 0;
+		while(argv[1][i]>0){
+                        ip[i] = argv[1][i];
+                        i++;
+                }
 		max_x = atoi(argv[4]);
 		max_y = atoi(argv[5]);
 		max_x = max_x + bild_breite;
